@@ -11,11 +11,15 @@ public:
 	void Draw();
 	void ClearBoard();
 
-	void AddChip(int row, int column, char type);
+	void AddChip(int x, int y, char type);
 
 	void Update(int area, char type);
 
 	void Initialize();
+
+	bool IsEmpty(int x, int y);
+
+	int EmptySection(int x);
 private:
 
 };

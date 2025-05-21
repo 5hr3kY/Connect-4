@@ -9,6 +9,12 @@ public:
 	int UserInput();
 	void Draw();
 	std::string phase;
-	std::string second_phase;
-	int init_section;
+	std::string confirmationPhase;
+	int initSection;
+
+	void NewTurn();
+
+	void BotTurn();
+	void UserTurn();
+
 };
