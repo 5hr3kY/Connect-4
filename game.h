@@ -1,6 +1,5 @@
 #pragma once
 #include "board.h"
-#include <string>
 
 class Game {
 public:
@@ -16,5 +15,9 @@ public:
 
 	void BotTurn();
 	void UserTurn();
+	int round;
+	int previousRound;
+	int winner;
+	const char* message{};
 
 };

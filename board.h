@@ -1,6 +1,6 @@
 #pragma once
 #include <raylib.h>
-
+#include <iostream>
 
 class Board {
 public:
@@ -8,6 +8,7 @@ public:
 	int numRows;
 	int numCols;
 	int grid[6][7];
+
 	void Draw();
 	void ClearBoard();
 
@@ -17,9 +18,10 @@ public:
 
 	void Initialize();
 
-	bool IsEmpty(int x, int y);
 
 	int EmptySection(int x);
-private:
+
+	int CheckWinner();
+
 
 };
