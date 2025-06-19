@@ -1,11 +1,8 @@
 // Connect-4.cpp : This file contains the 'main' function. Program execution begins and ends there.
 //
-//maybe create a person class to hold the player and bot funcs
-
-#include <raylib.h>
+//remake the winning condition to be more efficient ( don't look into indices outside of the grid.
 
 #include <iostream>
-#include <vector>
 #include "game.h"
 #include <string>
 

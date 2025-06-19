@@ -1,5 +1,6 @@
 #include "board.h"
-
+#include "config.h"
+#include "checker.h"
 
 Board::Board() {
 	numRows = 6;
@@ -9,13 +10,15 @@ Board::Board() {
 
 // function makes the board all empty
 void Board::Initialize() {
-
-	for (int row = 0; row < numRows; row++)
+	checkers.clear();
+	for (int column = 0; column <= numCols; column++)
 	{
-		for (int column = 0; column < numCols; column++)
-		{
-			grid[row][column] = 0;
+		std::vector<Checker> col;
+		for (int rows = 0; rows <= numRows; rows++){
+		
+			col.push_back(Checker( 150+(column * 95), 100+(rows*95), 0)); //100,150
 		}
+		checkers.push_back(col);
 	}
 	
 }
@@ -27,50 +30,38 @@ Draws the board
 3 is yellow, player two or bot
 0 is empty and default
 */
-void Board::Draw() {
-	//draw the area
-	Color color; 
-	DrawRectangle(50, 100, 700, 600, GRAY);
-	for (int y = 0; y < numRows; y++) {
-		for (int x = 0; x< numCols;x++) {	
-			switch (grid[y][x]) {
-			case 1:
-				color = BLUE;
-				break;
-			case 2:
-				color = RED;
-				break;
-			case 3:
-				color = YELLOW;
-				break;
-			default:
-				color = WHITE;
-				break;
-			}
 
-				DrawCircle(100 + x * 100, 150 + y * 100, 35, color);
-			}
+void Board::Draw1() {
+	//draw the area
+
+	for (int y = 0; y < numRows; y++) {
+		for (int x = 0; x < numCols; x++) {
+			checkers[y][x].Draw();//checkers[y][x]=Checker(100 + x * 95, 150 + y * 95, checkers[y][x]);
+		}
 	}
 }
-
-// If I want to reset the board for like mutiple games, use this function and maybe modify it in the future
-void Board::ClearBoard(){
-	Initialize();
+void Board::Draw2(){
+	
+	for (int y = 0; y <= numRows; y++) {
+		DrawRectangle(50, 100 + y * 95, 700, 50, GRAY);
 	}
+
+	for (int x = 0; x <= numCols; x++) {
+		DrawRectangle(50 + x * 95, 100, 50, 600, GRAY);
+	}
+
+
+}
+
+
 
 
 // adds a checker at the specified location
-void Board::AddChip(int x, int y, char type) {
-	// type is either 'B', 'R' or 'Y'
-	if (type == 'B') {
-		grid[y][x] = 1;
-	}
-	else if (type == 'R') {
-		grid[y][x] = 2;
-	}
-	else if (type == 'Y') {
-		grid[y][x] = 3;
-	}
+void Board::AddChip(int x, int y, int type) {
+
+	checkers[y][x].type = type;
+
+	checkers[y][x].color = checkers[y][x].NewColor();
 }
 
 
@@ -80,7 +71,7 @@ void Board::AddChip(int x, int y, char type) {
 void Board::Update(int area, char type) {
 	int y = 0;
 	for (y = numCols - 1; y >= 0; y--) {
-		if (grid[y][area] == 0) {
+		if (checkers[y][area].type == 0) {
 			AddChip(area,y, type);
 			break;
 		}
@@ -92,7 +83,7 @@ void Board::Update(int area, char type) {
 int Board::EmptySection(int x) {
 	int y;
 	for (y = numRows-1; y>= 0; y--) {
-		if (grid[y][x] == 0) {
+		if (checkers[y][x].type == 0) {
 
 			return y;
 		}
@@ -101,35 +92,43 @@ int Board::EmptySection(int x) {
 
 }
 
-// after each person goes, this should be called to see if anyone won (win requirement is connect 4 rules)
+
 int Board::CheckWinner() {
-	int winner = 0;
-	for (int person = 2; person <= 3; person++) {
-		//check horizontal
-		for (int y = 0; y < numRows; y++) {
-			for (int x = 0; x < numCols; x++) {
-				if (grid[y][x] == person) {
-					if (grid[y][x + 1] == person && grid[y][x + 2] == person && grid[y][x + 3] == person) {
-						winner = person;
-						break;
-					}
-					else if (grid[y + 1][x] == person && grid[y + 2][x] == person && grid[y + 3][x] == person) {
-						winner = person;
-						break;
-					}
-					else if (grid[y + 1][x + 1] == person && grid[y + 2][x + 2] == person && grid[y + 3][x + 3] == person) {
-						winner = person;
-						break;
-					}
-					else if (grid[y - 1][x + 1] == person && grid[y - 2][x + 2] == person && grid[y - 3][x + 3] == person) {
-						winner = person;
-						break;
-					}
+	
+	int person;
+	//check horizontal
+	for (int y = 0; y < numRows; y++) {
+		for (int x = 0; x < numCols; x++) {
+
+			person = checkers[y][x].type;
+			if (person == 0) continue; // skip empty spaces
+
+
+			//horizontal check
+			if (x <= 3) {
+				//check down
+				if (checkers[y][x + 1].type == person && checkers[y][x + 2].type == person && checkers[y][x + 3].type == person) return person;
+
+				// diagonal up
+				else if (y > 2) {
+					if (checkers[y - 1][x + 1].type == person && checkers[y - 2][x + 2].type == person && checkers[y - 3][x + 3].type == person) return person;
 
 				}
 			}
+
+			//vertical check
+			if (y <= 2) {
+				//check down
+				if (checkers[y + 1][x].type == person && checkers[y + 2][x].type == person && checkers[y + 3][x].type == person) return person;
+
+				//diagonal down
+				else if (x <= 3) {
+					if (checkers[y + 1][x + 1].type == person && checkers[y + 2][x + 2].type == person && checkers[y + 3][x + 3].type == person) return person;
+				}
+
+			}
 		}
 	}
-	return winner;
-
+	// nobody won yet
+	return 0;
 }
