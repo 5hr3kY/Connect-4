@@ -6,6 +6,7 @@ Board::Board() {
 	numRows = 6;
 	numCols = 7;
 	Initialize();
+
 }
 
 // function makes the board all empty

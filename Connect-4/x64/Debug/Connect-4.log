@@ -1,6 +1,6 @@
 ﻿  game.cpp
-C:\Users\chard\OneDrive\projects\Connect-4\game.cpp(215,2): warning C4804: '+=': unsafe use of type 'bool' in operation
-C:\Users\chard\OneDrive\projects\Connect-4\game.cpp(217,16): warning C4244: '+=': conversion from 'double' to 'int', possible loss of data
+C:\Users\chard\OneDrive\projects\Connect-4\game.cpp(400,2): warning C4804: '+=': unsafe use of type 'bool' in operation
+C:\Users\chard\OneDrive\projects\Connect-4\game.cpp(402,16): warning C4244: '+=': conversion from 'double' to 'int', possible loss of data
   Connect-4.vcxproj -> C:\Users\chard\OneDrive\projects\Connect-4\x64\Debug\Connect-4.exe
   'pwsh.exe' is not recognized as an internal or external command,
   operable program or batch file.

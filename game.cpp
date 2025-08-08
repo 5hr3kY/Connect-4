@@ -3,6 +3,8 @@
 #include <iostream>
 #include <string>
 #include "config.h"
+#include <chrono>
+#include <thread>
 
 Game::Game()
 {
@@ -19,6 +21,10 @@ Game::Game()
 	startAnimation = false;
 	velocity = 0.0f;
 
+	isPlayer; // checks if the game is against a player or a bot, true is against player, false is against bot
+	gameStart = false;
+
+	isEnd = false;
 
 }
 
@@ -50,8 +56,163 @@ int Game::UserInput() {
 	}
 }
 
+void Game::Draw()
+{
+	if (gameStart) {
+
+		//this part check if the game is against player
+		if (isPlayer) {
+			PlayerVSPlayer();
+		}
+
+		//this part will draw the game and its core aspects against a player
+		else {
+			PlayerVSBot();
+		}
+	}//if the game hasn't started, it checks if its the beginning menu or the losing/winning menu
+	else {
+		if (isEnd) {
+			EndScreen();
+		}
+		else BeginningScreen();
+	}
+}
+
+void Game::EndScreen() {
+	bool mousePressed = IsMouseButtonPressed(MOUSE_LEFT_BUTTON);
+	Vector2 mousePos = GetMousePosition();
+	DrawText(message, (WIDTH/2)- (MeasureText(message,100)/2), 20, 100, GREEN);
+	Rectangle MenuButton = { 50, 400, 300, 90 };
+	Rectangle AgainButton = { 400, 400, 300, 90 };
+	DrawRectangleRec(MenuButton, WHITE);
+	DrawRectangleRec(AgainButton,WHITE);
+
+	DrawText("Menu",200 -MeasureText("MENU",FONTSIZE)/2, 420, FONTSIZE, BLACK);
+	DrawText("Play Again",550-MeasureText("Play Again",FONTSIZE)/2, 420, FONTSIZE,BLACK);
+
+	if (mousePressed){
+		if (CheckCollisionPointRec(mousePos, MenuButton)) {
+			isEnd = false;
+			gameStart = false;	
+			board.Initialize();
+			winner = 0;
+			phase = "Player";
+		
+	
+		}
+		if (CheckCollisionPointRec(mousePos, AgainButton)) {
+			gameStart = true;
+			isEnd = false;
+			winner = 0;
+			board.Initialize();
+			phase = "Player";
+
+		}
+
+
+	}
+}
+
+
+// this screen whill have a title and 2 buttons, a playervsplayer and a botvsplayer button
+//    bool IsMouseButtonPressed(int button);
+void Game::BeginningScreen() {
+	bool mousePressed = IsMouseButtonPressed(MOUSE_LEFT_BUTTON);
+	Vector2 mousePos = GetMousePosition();                         
+	Rectangle PVBButton = { 50, 400, 300, 90 };
+	Rectangle PVPButton = { 400, 400, 300, 90 };
+
+	DrawText("Connect 4", (WIDTH/2)-260, 100, 100, BLACK);
+	DrawRectangleRec(PVBButton, BLUE);
+	DrawRectangleRec(PVPButton, BLUE);
+
+	DrawText("Player vs Bot", 100, 420, FONTSIZE, WHITE);
+	DrawText("Player vs Player", 420, 420, FONTSIZE, WHITE);
+
+	if (mousePressed) {
+		if (CheckCollisionPointRec(mousePos, PVBButton)) {
+			isPlayer = false;
+			gameStart = true;
+		}
+
+		if (CheckCollisionPointRec(mousePos, PVPButton)) {
+			isPlayer = true;
+			gameStart = true;
+		}
+	}
+}
+
+void Game::PlayerVSPlayer() {
+
+
+	board.Draw1();
+
+	if (startAnimation) {
+		Color col;
+		int vertical;
+		int horizontal;
+		int type;
+
+		if (phase == "Player") {
+			col = RED;
+			type = 2;
+			horizontal = initSection;
+			vertical = board.EmptySection(initSection);
+		}
+		else if (phase == "Player2") {
+			col = YELLOW;
+			type = 3;
+			horizontal = initSection;
+			vertical = board.EmptySection(initSection);
+			
+		}
+		finishAnimation = Animate(horizontal, col, vertical);
+
+		if (finishAnimation) {
+			startAnimation = false;
+			finishAnimation = false;
+			board.AddChip(horizontal, vertical, type);
+
+			NewTurn();
+			// reset the animation time
+			animationTime = GetTime();
+		}
+
+
+	}
+
+	board.Draw2();
+
+	//draws the winner
+	if (winner != 0) {
+		isEnd = true;
+		gameStart = false;
+		return;
+	}
+
+	//writes whose turn it is
+	if (phase == "Player") {
+		TurnText(3);
+	}
+	else if (phase == "Player2") {
+		TurnText(4);
+	}
+
+	if (phase == "Player") {
+		UserTurn();
+		return;
+	}
+	if (phase == "Player2") {
+
+		UserTurn();
+		return;
+	}
+
+}
+
 // should rework this, very inefficient
-void Game::Draw() {
+void Game::PlayerVSBot() {
+
 
 	board.Draw1();
 
@@ -72,6 +233,7 @@ void Game::Draw() {
 			type = 3;
 			horizontal = botX;
 			vertical = botY;
+
 		}
 		finishAnimation = Animate(horizontal, col, vertical);
 
@@ -83,6 +245,7 @@ void Game::Draw() {
 			NewTurn();
 			// reset the animation time
 			animationTime = GetTime();
+
 		}
 	
 
@@ -92,7 +255,9 @@ void Game::Draw() {
 
 	//draws the winner
 	if (winner != 0) {
-		DrawText(message, 100, 10, FONTSIZE, BLACK);
+		isEnd = true;
+		gameStart = false;
+		return;
 	}
 
 	//writes whose turn it is
@@ -117,17 +282,30 @@ void Game::Draw() {
 
 // changes the turn
 void Game::NewTurn() {
-	if (phase == "Player") {
-		phase = "Bot";
-		confirmationPhase = "Unconfirmed";
-		initSection = -1;
+	if (not isPlayer) {
+		if (phase == "Player") {
+			phase = "Bot";
+			confirmationPhase = "Unconfirmed";
+			initSection = -1;
+		}
+		else if (phase == "Bot") {
+			botX = -1;
+			botY = -1;
+			phase = "Player";
+		}
 	}
-	else if (phase == "Bot") {
-		botX = -1;
-		botY = -1;
-		phase = "Player";
+	else if (isPlayer) {
+		if (phase == "Player") {
+			phase = "Player2";
+			confirmationPhase = "Unconfirmed";
+			initSection = -1;
+		}
+		else if (phase == "Player2") {
+			phase = "Player";
+			confirmationPhase = "Unconfirmed";
+			initSection = -1;
+		}
 	}
-
 	// if someone wins, the info will be gained here
 	winner = board.CheckWinner();
 	if (winner == 2) {
@@ -145,7 +323,6 @@ void Game::BotTurn() {
 		botX = rand() % board.numCols;
 		botY = board.EmptySection(botX);
 	} while (botY == -1);
-
 
 
 	startAnimation = true;
@@ -175,6 +352,7 @@ void Game::UserTurn() {
 
 		startAnimation = true;
 		animationTime = GetTime();
+		confirmationPhase = "Unconfirmed";
 		
 	}// this part sees if the user selected a new row
 	else if (key != 7 && key != -1 && !startAnimation) {
@@ -194,14 +372,21 @@ void Game::TurnText(int turn) {
 	else if (turn == 1) {
 		message = "Bot's Turn";
 	}
+	else if (turn == 3) {
+		message = "Player 1's Turn";
+	}
+	else if (turn == 4) {
+		message = "Player 2's Turn";
+	}
 	DrawText(message.c_str(), 500, 10, FONTSIZE, BLACK);
 	return;
 }
 
 void Game::CreateHighlight(int x) {
 	if (confirmationPhase == "Confirmed" && !startAnimation) {
+		Color type = phase == "Player" ? RED : YELLOW;
 		DrawRectangle(85 + x * 95, 40, 75, 60, {255,255,255,120}); // Draw a gray rectangle to highlight the selected colu
-		DrawRectangle(100 + x * 95, 49, CHECKERLENGTHS, CHECKERLENGTHS, RED); // Draw a fake checker
+		DrawRectangle(100 + x * 95, 49, CHECKERLENGTHS, CHECKERLENGTHS, type); // Draw a fake checker
 		}
 }
 
@@ -216,7 +401,7 @@ bool Game::Animate(int row, Color color,int location) {
 
 	y += velocity * timeLeft;
 
-	if (y+50-(CHECKERLENGTHS/2) < location*95+100) {
+	if (y-7< location*95+100) {//-(CHECKERLENGTHS/2)
 
 		DrawRectangle(100 + row * 95,  y+50 , CHECKERLENGTHS, CHECKERLENGTHS, color);
 		return false; //still animating

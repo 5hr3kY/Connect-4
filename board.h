@@ -5,12 +5,13 @@
 #include "checker.h"
 
 
+//this creates the board logic that can be manipulated
+
 class Board {
 public:
 	Board();
 	int numRows;
 	int numCols;
-	int grid[6][7];
 	std::vector<std::vector<Checker>> checkers;
 	void Draw1();
 	void Draw2();
@@ -25,6 +26,5 @@ public:
 	int EmptySection(int x);
 
 	int CheckWinner();
-
 
 };

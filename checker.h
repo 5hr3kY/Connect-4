@@ -1,6 +1,8 @@
 #pragma once
 #include "config.h"
 
+//this is primarily for the pieces and their functioning
+
 
 class Checker {
 public:

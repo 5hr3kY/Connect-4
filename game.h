@@ -1,6 +1,9 @@
 #pragma once
 #include "board.h"
 
+
+//This includes how the logic of the game works
+
 class Game {
 public:
 	Game();
@@ -10,7 +13,8 @@ public:
 	int UserInput();
 
 	void Draw();
-
+	void PlayerVSBot();
+	void PlayerVSPlayer();
 	//for confirmation for player turn
 	std::string phase;
 	std::string confirmationPhase;
@@ -40,8 +44,18 @@ public:
 	double animationTime{ GetTime()};
 	bool velocity;
 
+	// against a player? false is against bot
+	bool isPlayer;
 
+	// checks if the game has started so it can start board or the menu
+	bool gameStart;
+	//checks if the game is over
+	bool isEnd;
 
 	int botX;
 	int botY;
+
+	void EndScreen();
+	void BeginningScreen();
+
 };
