@@ -58,8 +58,7 @@
               "RelativeToolTip": "config.h",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAMAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
-              "WhenOpened": "2025-06-22T17:55:52.972Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-06-22T17:55:52.972Z"
             },
             {
               "$type": "Document",
@@ -83,8 +82,7 @@
               "RelativeToolTip": "checker.h",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAMAAAA4AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
-              "WhenOpened": "2025-06-04T14:48:01.438Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-06-04T14:48:01.438Z"
             },
             {
               "$type": "Document",
@@ -96,8 +94,7 @@
               "RelativeToolTip": "game.h",
               "ViewState": "AgIAABUAAAAAAAAAAAAAABkAAAAOAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
-              "WhenOpened": "2025-05-21T01:56:20.556Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-05-21T01:56:20.556Z"
             },
             {
               "$type": "Document",
@@ -105,9 +102,9 @@
               "Title": "game.cpp",
               "DocumentMoniker": "C:\\Users\\chard\\OneDrive\\projects\\Connect-4\\game.cpp",
               "RelativeDocumentMoniker": "game.cpp",
-              "ToolTip": "C:\\Users\\chard\\OneDrive\\projects\\Connect-4\\game.cpp*",
-              "RelativeToolTip": "game.cpp*",
-              "ViewState": "AgIAAG4BAAAAAAAAAAAAAIIBAAAgAAAAAAAAAA==",
+              "ToolTip": "C:\\Users\\chard\\OneDrive\\projects\\Connect-4\\game.cpp",
+              "RelativeToolTip": "game.cpp",
+              "ViewState": "AgIAAFkBAAAAAAAAAAAgwHoBAAAeAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
               "WhenOpened": "2025-05-21T01:59:28.19Z",
               "EditorCaption": ""
@@ -122,8 +119,7 @@
               "RelativeToolTip": "Connect-4.cpp",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAARAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2025-05-20T05:53:33.596Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-05-20T05:53:33.596Z"
             },
             {
               "$type": "Document",
@@ -135,8 +131,7 @@
               "RelativeToolTip": "board.h",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAA2AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
-              "WhenOpened": "2025-05-21T01:17:02.913Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-05-21T01:17:02.913Z"
             },
             {
               "$type": "Document",
@@ -148,8 +143,7 @@
               "RelativeToolTip": "board.cpp",
               "ViewState": "AgIAAFcAAAAAAAAAAAAAAA4AAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2025-05-21T01:16:28.19Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-05-21T01:16:28.19Z"
             }
           ]
         }
